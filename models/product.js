@@ -1,6 +1,13 @@
 // Data dummy untuk menyimpan produk
 let products = [];
 
+function generateId() {
+  const timestamp = Date.now().toString();
+  const randomNum = Math.floor(Math.random() * 1000).toString();
+  const uniqueId = timestamp + randomNum;
+  return uniqueId;
+}
+
 class Product {
   constructor(id, name, price) {
     this.id = id;
@@ -33,4 +40,13 @@ class Product {
       return null;
     }
   }
+
+  static deleteProduct(productId) {
+    const res = products.filter((product) => product.id !== productId);
+    console.log(res);
+    products = res;
+    return res;
+  }
 }
+
+module.exports = Product;
