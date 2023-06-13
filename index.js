@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require('dotenv').config()
 const port = 3000;
 
 // Middleware
@@ -7,6 +8,7 @@ const logger = require("./middleware/logger");
 
 // Routes
 const productRoutes = require("./routes/products");
+const { default: mongoose } = require("mongoose");
 
 // Middleware untuk parsing body pada permintaan POST dan PUT
 app.use(express.json());
@@ -31,5 +33,19 @@ app.use((err, req, res, next) => {
 
 // Menjalankan server
 app.listen(port, () => {
+  // Connect to MongoDB
+  mongoose
+    .connect(
+      process.env.MONGO_URI,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    )
+    .then(() => {
+      mongoose.connection;
+      console.log(`Database berjalan`);
+    });
+
   console.log(`Server berjalan di http://localhost:${port}`);
 });
